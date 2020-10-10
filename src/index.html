@@ -10,23 +10,19 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+    <link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
   </head>
   <body>
-<form action="submit" class="formCountry">
-  <input class="formCountryInput" type="text" name="ourInput" value="" placeholder="Write name of country which you are want find:)">
-</form>
-<div class="container">
-  <h2 class="title"></h2>
-  <div class="divi">
-  <ul class="list">
-    <li class="capital"></li>
-    <li class="population"></li>
-    <li class="languages"></li>
-  </ul>
-  <img src="https://www.nwflags.co.uk/ekmps/shops/0ec9a8/resources/design/country_flags_banner_mobile3.jpg" >
-</div>
-  <h3 class="list_search">list search</h3>
-  <ul class="list_render"></ul>
-</div>
+    <form class="search-form" id="search-form" >
+      <input class="search-input" type="text" name="query" autocomplete="off" placeholder="Search images..." value="" 
+      />
+    </form>
+    <button type="button" class="delete-button">clear list searching</button>
+    <ul class="gallery">
+    </ul>
+      <button type="button" class="load-more__display-none add-button">load more</button>
   </body>
 </html>

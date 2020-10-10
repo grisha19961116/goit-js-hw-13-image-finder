@@ -1,85 +1,62 @@
-.formCountry{
+body{
+  background-color: rgb(246, 167, 87);
+}
+.img-hbs{
+  width: 120px;
+}
+.gallery{
   display: flex;
-  background-color: gray;
-  height: 70px;
-  justify-content: center;
-  font-size: 30px;
+  flex-wrap: wrap;
 }
-.formCountryInput{
-width: 30%;
-margin: 10px 0px;
-font-size: 24px;
-padding-left: 20px;
-color: orange;
-}
-.formCountryInput::placeholder{
-  color: black;
-  font-size: 24px;
-  
-}
-.container{
-  height: 2000px;
-  padding: 10px;
-  background-color: black;
-  color: white;
-}
-.find{
-  color: rgb(202, 236, 11);
-  background-color: rgb(97, 93, 93);
-}
-.find_country{
-  background-color: rgb(54, 47, 47);
-  
-}
-.divi{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 50px 0;
-}
-.title{
-  text-align: center;
-  font-size: 30px;
-}
-.list{
-  list-style: none;
-}
-img{
-  max-width: 500px;
-  max-height: 300px;
-  padding-top: 20px;
-  margin-left: 30%;
-}
-.list_search{
+.search-input{
+  height: 50px;
+  width: 200px;
   display: block;
-  text-align: center;
   margin: 0 auto;
-  width: 100%;
-  font-size: 40px ;
-
+  border: solid 5px brown;
+  font-size: 30px;
+  color: chartreuse;
   text-transform: uppercase;
 }
-.list_render{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.search-input::placeholder{
+  font-size: 20px;
+  color: white;
+  background-color: black;
 }
-.list_render_li{
-  font-size: 25px ;
+.delete-button{
+  position: absolute;
+  display: block;
+  height: 80px;
+  width: 200px;
+  top: 56px;
+  right: 600px;
+  font-size: 16px;
+  color:black;
+  background-color: pink;
+  border: solid 3px rebeccapurple;
+}
+.delete-button:hover{
+  background-color: red;
+}
+.search-form{
+ position: relative;
+  padding-top: 50px;
+  margin-bottom: 100px;
+}
+.menu__item{
   list-style: none;
+  margin-right: 30px;
 }
-.capital{
-  font-size: 60px;
-  margin-bottom: 10px;
+.load-more__display-none{
+  display: none;
 }
-.population{
-  font-size: 30px;
-  margin-bottom: 10px;
+.load-more{
+  display: block;
+  background-color: olivedrab;
+  width: 120px;
+  height: 30px;
+  margin: 0 auto;
 }
-.languages{
-  font-size: 45px;
+.load-more:hover{
+  background-color:orange;
 }
-/* <li class="capital"></li>
-<li class="population"></li>
-<li class="languages"></li> */
