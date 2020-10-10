@@ -1,122 +1,131 @@
 export 
 let debounce = require('lodash.debounce');
+var throttle = require('lodash.throttle');
 import menuTemplate from '../templates/galery.hbs';
 import { alert, notice, info, success, error, defaultModules } from'@pnotify/core';
 import"@pnotify/core/dist/PNotify.css";
 import"@pnotify/core/dist/BrightTheme.css";
 import apiService from './apiService.js';
+const bodyDom = document.querySelector('body');
 const formDom = document.querySelector('form');
 const inputInFormDom = document.querySelector('input');
 const readyRenderingUl = document.querySelector('ul');
 const renderWithButton = document.querySelector('.add-button');
-const deletRenderButton = document.querySelector('.delete-button');
+const deleteRenderButton = document.querySelector('.delete-button__dom');
+const photoModalDom = document.querySelector(".photoModal");
 let searchPage = 1;
+const renderFn = function(){
+  const searchWord = inputInFormDom.value;
+  if(searchWord === ''){
+    return;
+  }
+  searchPage = searchPage + 1;
+  apiService.getFullRequest(searchWord,searchPage)
+  .then( (ObjectWithDataMarkup) => {
+    readyRenderingUl.insertAdjacentHTML('beforeend',menuTemplate(ObjectWithDataMarkup.hits));
+    window.scrollTo(0, 10000);
+    return readyRenderingUl;
+  }).catch(err => {
+        const myError = error({
+                text:"we don't have photo with this name."
+          });
+        console.error(err,`something wrong  with server`);
+      });
+}
+let scrollBefore = 0;
+window.addEventListener('scroll', debounce((even) => {
+  const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1
+}
+if(inputInFormDom.value.length > 4){
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      const scrolled = window.scrollY;
+
+      if(scrollBefore > scrolled){
+        scrollBefore = scrolled;
+        console.log(`up`)
+          return;
+      } else if((scrolled > scrollBefore)) {
+        console.log(`down`)
+          scrollBefore = scrolled ;
+          renderFn();
+          return ;
+      }
+    })
+}, options)
+    observer.observe(readyRenderingUl);
+}
+
+},3000))
+
+
 formDom.addEventListener('submit', even => {
   even.preventDefault()
-})
+});
+
+readyRenderingUl.addEventListener('click',((even) => {
+  if(even.target.tagName === "IMG"){
+    const srcFullPhoto = even.target.dataset.set;
+    const altTextPhotoFull = even.target.alt;
+    photoModalDom.setAttribute('src',`${srcFullPhoto}`);
+    photoModalDom.setAttribute('alt',`${altTextPhotoFull}`);
+    photoModalDom.classList.remove('remove-before-modal');
+    photoModalDom.classList.add('remove-after-modal');
+    return;
+     } 
+     photoModalDom.setAttribute('src',``);
+     photoModalDom.setAttribute('alt',``);
+     photoModalDom.classList.add('remove-before-modal');
+     photoModalDom.classList.remove('remove-after-modal');
+     
+    }
+  )
+)
+
+deleteRenderButton.addEventListener('click', ((even) => {
+  readyRenderingUl.innerHTML = '';
+  inputInFormDom.value = '';
+  renderWithButton.classList.replace('load-more','load-more__display-none');
+  deleteRenderButton.classList.replace('delete-button','delete-button__display-none');
+}))
+
 inputInFormDom.addEventListener('input',debounce((ev) => {
   const searchWord = inputInFormDom.value;
-   searchPage = 1;
+  searchPage = 1;
   readyRenderingUl.innerHTML = '';
-  renderWithButton.classList.add('.load-more');
-  console.log(renderWithButton.classList.add('load-more'))
+  renderWithButton.classList.replace('load-more__display-none','load-more');
+  deleteRenderButton.classList.replace('delete-button__display-none','delete-button')
+  if(searchWord === ''){
+          const myAlert = alert({
+        text:"field have tob no empty,please fill it",
+        type: 'info' });
+        renderWithButton.classList.replace('load-more','load-more__display-none');
+        deleteRenderButton.classList.replace('delete-button','delete-button__display-none');
+           return;
+  }
+  const myAlert = alert({
+    text:"write name photo which you're wish to find",
+    type: 'info' });
+
     apiService.getFullRequest(searchWord,searchPage)
     .then( (ObjectWithDataMarkup) => {
       readyRenderingUl.insertAdjacentHTML('beforeend',menuTemplate(ObjectWithDataMarkup.hits))
       return readyRenderingUl;
-    })
+    }).catch(err => {
+      const myError = error({
+              text:"we don't have photo with this name."
+        });
+      console.error(err,`something wrong  with server`);
+    });
   }, 500 ));
+
   renderWithButton.addEventListener('click',( (even) => {
-    const searchWord = inputInFormDom.value;
-    if(searchWord === ''){
-      return;
-    }
-    console.log(searchWord);
-    searchPage = searchPage + 1;
-    apiService.getFullRequest(searchWord,searchPage)
-    .then( (ObjectWithDataMarkup) => {
-      readyRenderingUl.insertAdjacentHTML('beforeend',menuTemplate(ObjectWithDataMarkup.hits))
-      return readyRenderingUl;
-    })
+    renderFn();
   }));
-  deletRenderButton.addEventListener('click', ((even) => {
-    readyRenderingUl.innerHTML = '';
-    renderWithButton.classList.remove('.load-more');
-  }))
 
-// console.log(apiService.getFullRequest(searchWord,searchPage))
-
-// const fragment = document.createDocumentFragment();
-// const containerDom = document.querySelector('.container');
-// const capitalDom = document.querySelector('.capital');
-// const populationDom = document.querySelector('.population');
-// const languagesDom = document.querySelector('.languages');
-// const imgDom = document.querySelector('img');
-// const titleDom = document.querySelector('.title');
-// const ulForRenderLi = document.querySelector('.list_render');
-// const formCountryDom = document.querySelector('.formCountry');
-// const stopDefaultBehaviorForm = document.querySelector('form');
-// const getValueFromInput = document.querySelector('input');
-// capitalDom.textContent = 'Capital : ';
-// populationDom.textContent = 'Population :';
-// languagesDom.textContent = 'Languages : ';
-// stopDefaultBehaviorForm.addEventListener('submit', even => {
-//   even.preventDefault();
-// });
-// const handleInput = document.querySelector('input');
-// handleInput.addEventListener('input', debounce((ev) => {
-//   ulForRenderLi.innerHTML = '';
-//   capitalDom.textContent = 'Capital : ';
-//   populationDom.textContent = 'Population :';
-//   languagesDom.textContent = 'Languages : ';
-//   containerDom.classList.remove('find');
-//   formCountryDom.classList.remove('find_country');
-//   imgDom.setAttribute('src',"https://www.nwflags.co.uk/ekmps/shops/0ec9a8/resources/design/country_flags_banner_mobile3.jpg");
-//   const keyWord = getValueFromInput.value;
-//   if(keyWord === ''){
-//     return;
-//   }
-//   const keyRequest = `https://restcountries.eu/rest/v2/name/${keyWord}`;
-//   fetchCountries(keyRequest)
-//   .then((data) => {
-//     const foo = data.reduce((acc,elem ,index) => {
-//       acc.push(elem.name,...elem.flag,...elem.capital,...elem.population,...elem.languages,...elem.demonym);
-//       const RenderLiDom = document.createElement('li');
-//       RenderLiDom.classList.add('list_render_li');
-//       RenderLiDom.textContent = elem.name;
-//       fragment.appendChild(RenderLiDom);
-//       return acc;
-//     },[]);
-
-//     if(foo.length >= 36){
-//       const myAlert = alert({
-//         text:"please write more aim name country",
-//         type: 'info'
-//   });
-//     }
-//       if(foo.length === 6){
-//         imgDom.removeAttribute('src');
-//         imgDom.setAttribute('src',foo[1]);
-//         capitalDom.textContent = 'Capital : '+foo[2] ;
-//         populationDom.textContent = 'Population : '+foo[3];
-//         languagesDom.textContent = 'Languages : ' +foo[4].name;
-//         titleDom.textContent = 'Name country which we are searching : '+foo[5];
-//         containerDom.classList.add('find');
-//         formCountryDom.classList.add('find_country');
-//       };
-//     ulForRenderLi.appendChild(fragment);
-//   })
-//   .then( (elem) => {
-//   }
-//   )
-//   .catch(err => {
-//     const myError = error({
-//             text:"we don't have country with this name."
-//       });
-      
-//     console.error(err,`something wrong  with server`);
-//   });
-// }, 500 ));
 
 
  

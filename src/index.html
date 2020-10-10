@@ -14,13 +14,15 @@
   href="https://fonts.googleapis.com/icon?family=Material+Icons"
   rel="stylesheet"
 />
+<link rel="stylesheet" href="dist/basicLightbox.min.css">
   </head>
   <body>
+    <img class="photoModal remove-before-modal" width="1400" height="900" src="" alt="">
     <form class="search-form" id="search-form" >
       <input class="search-input" type="text" name="query" autocomplete="off" placeholder="Search images..." value="" 
       />
     </form>
-    <button type="button" class="delete-button">clear list searching</button>
+    <button type="button" class="delete-button__display-none delete-button__dom">clear list searching</button>
     <ul class="gallery">
     </ul>
       <button type="button" class="load-more__display-none add-button">load more</button>

@@ -1,6 +1,20 @@
 body{
   background-color: rgb(246, 167, 87);
+  position: relative;
 }
+.photoModal{
+  position: absolute;
+  width : 1400px;
+  height: 900px;
+}
+.remove-after-modal{
+  left: 10%;
+  transition-duration: 0.8s;
+}
+.remove-before-modal{
+  left: 105%;
+}
+
 .img-hbs{
   width: 120px;
 }
@@ -23,14 +37,14 @@ body{
   color: white;
   background-color: black;
 }
+.delete-button__display-none{
+  display: none;
+}
 .delete-button{
-  position: absolute;
   display: block;
-  height: 80px;
+  margin: 0 auto;
   width: 200px;
-  top: 56px;
-  right: 600px;
-  font-size: 16px;
+  height: 30px;
   color:black;
   background-color: pink;
   border: solid 3px rebeccapurple;
@@ -39,13 +53,15 @@ body{
   background-color: red;
 }
 .search-form{
- position: relative;
   padding-top: 50px;
-  margin-bottom: 100px;
+  margin-bottom: 20px;
 }
 .menu__item{
   list-style: none;
   margin-right: 30px;
+  -webkit-box-shadow: 37px 39px 37px 0px rgba(235,194,12,0.81);
+  -moz-box-shadow: 37px 39px 37px 0px rgba(235,194,12,0.81);
+  box-shadow: 37px 39px 37px 0px rgba(235,194,12,0.81);
 }
 .load-more__display-none{
   display: none;
@@ -56,7 +72,25 @@ body{
   width: 120px;
   height: 30px;
   margin: 0 auto;
+  margin-bottom: 180px;
+  margin-top: 16px;
 }
 .load-more:hover{
   background-color:orange;
+}
+.like{
+  color: red;
+}
+.view{
+  color: blue;
+}
+.comment{
+  color: green;
+}
+.icons{
+  color: yellow;
+}
+.stats-item{
+  color:yellowgreen;
+  font-size: 30px;
 }
