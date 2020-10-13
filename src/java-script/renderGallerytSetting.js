@@ -14,13 +14,17 @@ const deleteRenderButton = document.querySelector('.delete-button__dom');
 const photoModalDom = document.querySelector(".photoModal");
 let scrollBefore = 0;
 let searchPage = 1;
-
 function renderFn(){
     const searchWord = inputInFormDom.value;
+    searchWord.trim();
     if(searchWord === ''){
+        error({
+            text:"field have tob no empty,please fill it",
+            type: 'info' });
+            renderWithButton.classList.replace('load-more','load-more__display-none');
+            deleteRenderButton.classList.replace('delete-button','delete-button__display-none');
       return;
     }
-    searchPage = searchPage + 1;
     apiService.getFullRequest(searchWord,searchPage)
     .then( (ObjectWithDataMarkup) => {
       readyRenderingUl.insertAdjacentHTML('beforeend',menuTemplate(ObjectWithDataMarkup.hits));
@@ -36,37 +40,21 @@ function renderFn(){
     formDom.addEventListener('submit', even => {
       even.preventDefault()
     });
+
     inputInFormDom.addEventListener('input',debounce((ev) => {
       const searchWord = inputInFormDom.value;
       searchPage = 1;
       readyRenderingUl.innerHTML = '';
       renderWithButton.classList.replace('load-more__display-none','load-more');
-      deleteRenderButton.classList.replace('delete-button__display-none','delete-button')
-      if(searchWord.includes(' ') || searchWord === ''){
-               error({
-            text:"field have tob no empty,please fill it",
-            type: 'info' });
-            renderWithButton.classList.replace('load-more','load-more__display-none');
-            deleteRenderButton.classList.replace('delete-button','delete-button__display-none');
-               return;
-      }
-            alert({
+      deleteRenderButton.classList.replace('delete-button__display-none','delete-button');
+      alert({
         text:"write name photo which you're wish to find",
         type: 'info' });
-    
-        apiService.getFullRequest(searchWord,searchPage)
-        .then( (ObjectWithDataMarkup) => {
-          readyRenderingUl.insertAdjacentHTML('beforeend',menuTemplate(ObjectWithDataMarkup.hits))
-          return readyRenderingUl;
-        }).catch(err => {
-             error({
-                  text:"we don't have photo with this name."
-            });
-          console.error(err,`something wrong  with server`);
-        });
+        renderFn();
       }, 500 ));
   
     renderWithButton.addEventListener('click',( (even) => {
+        searchPage = searchPage + 1;
       renderFn();
     }));
   
@@ -88,7 +76,6 @@ function renderFn(){
         }
       )
     )
-  
     window.addEventListener('scroll', debounce((even) => {
       const options = {
         root: null,
@@ -99,7 +86,6 @@ function renderFn(){
       const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           const scrolled = window.scrollY;
-    
           if(scrollBefore > scrolled){
             scrollBefore = scrolled;
             console.log(`up`)
@@ -107,6 +93,7 @@ function renderFn(){
           } else if((scrolled > scrollBefore)) {
             console.log(`down`)
               scrollBefore = scrolled ;
+              searchPage = searchPage + 1;
               renderFn();
               return ;
           }
@@ -114,9 +101,7 @@ function renderFn(){
     }, options)
         observer.observe(readyRenderingUl);
     }
-    
     },3000))
-  
     deleteRenderButton.addEventListener('click', ((even) => {
       readyRenderingUl.innerHTML = '';
       inputInFormDom.value = '';
