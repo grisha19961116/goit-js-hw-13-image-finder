@@ -1,10 +1,2 @@
-
 import './styles.css';
-import  './java-script/renderGallerytSetting';
-
-
-
-
-
-
-
+import './java-script/mainGallery';
