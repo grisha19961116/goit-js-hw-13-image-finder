@@ -39,7 +39,7 @@ const switchBtn = (flag, warn) => {
     return;
   }
 };
-const deleteBtnListener = deleteRenderButton.addEventListener('click', e => {
+deleteRenderButton.addEventListener('click', e => {
   document.removeEventListener('click', modalImgListener);
   photoModalDom.setAttribute('src', ``);
   photoModalDom.setAttribute('alt', ``);
@@ -50,4 +50,4 @@ const deleteBtnListener = deleteRenderButton.addEventListener('click', e => {
   switchBtn(false);
 });
 
-export { renderWithButton, deleteRenderButton, switchBtn, deleteBtnListener };
+export { renderWithButton, deleteRenderButton, switchBtn };
